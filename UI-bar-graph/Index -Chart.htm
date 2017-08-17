@@ -1,0 +1,64 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+
+    <style>
+        .chart div {
+            font: 10px sans-serif;
+            background-color: steelblue;
+            text-align: right;
+            padding: 3px;
+            margin: 1px;
+            color: white;
+        }
+    </style>
+
+
+
+    <script>
+        //Global variable to hold json object.
+        var JsonData;
+
+        //load data from json file
+        $(function () {
+
+            //variable to store feed's count
+            var TotalCount = 0;
+
+            $.getJSON('data.json', function (data) {
+                JsonData = data;
+                $.each(data.data, function (i, f) {
+                    var tblRow = "<div  style='width: " + 10 * f + "px;'>" + f + "</div>"
+                    $(tblRow).appendTo("#userdata");
+                    TotalCount++;
+                });
+
+                //show feed's count
+                document.getElementById('TotalCount').value = TotalCount;
+
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+
+    <div>
+        <div id="userdata" class="chart">
+           
+             
+
+
+        </div>
+    </div>
+
+    
+</body>
+</html>

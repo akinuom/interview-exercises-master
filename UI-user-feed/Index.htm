@@ -1,0 +1,138 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <script>
+        //Global variable to hold json object.
+        var JsonData;
+
+        //load data from json file
+        $(function () {
+
+            //variable to store feed's count
+            var TotalCount = 0;
+
+            $.getJSON('data.json', function (data) {
+                JsonData = data;
+                $.each(data.feed, function (i, f) {
+                    var tblRow = "<tr>" + "<td>" + f.user + "</td>" +
+                     "<td>" + f.value + "</td>" + "<td>" + f.id + "</td>" + "<td>" + f.timestamp + "</td>" +
+                      "<td>" + f.timeZoneOffset + "</td>" + "<td><input readonly='readonly' type='text' id='likes " + i + "' value=" + f.likes + " /><button onclick='incrementValue(" + i + ")'>+</button>" + " </td>" + "</tr>"
+                    $(tblRow).appendTo("#userdata tbody");
+                    TotalCount++;
+                });
+
+                //show feed's count
+                document.getElementById('TotalCount').value = TotalCount;
+
+            });
+
+
+
+        });
+
+        //function for increment
+        function incrementValue(i) {
+
+            var id = "likes " + i;
+
+            var value = parseInt(document.getElementById(id).value);
+            value = isNaN(value) ? 0 : value;
+            value++;
+
+            document.getElementById(id).value = value;
+        }
+
+        function AddData() {
+
+            //Get data from user's input
+            var aData = {
+                "user": document.getElementById('userText').value,
+                "value": document.getElementById('valueText').value,
+                "id": document.getElementById('idText').value,
+                "timestamp": document.getElementById('timestampText').value,
+                "timeZoneOffset": document.getElementById('timeZoneOffsetText').value,
+                "likes": document.getElementById('likesText').value
+            }
+
+            var TotalCount = 0;
+
+            //add item to json data object (global)
+            JsonData.feed.push(aData);
+
+            //clear previous data from list/table.
+            $("#userdata > tbody").empty();
+
+            //loop thru the json data.
+            $.each(JsonData.feed, function (i, f) {
+                var tblRow = "<tr>" + "<td>" + f.user + "</td>" +
+                 "<td>" + f.value + "</td>" + "<td>" + f.id + "</td>" + "<td>" + f.timestamp + "</td>" +
+                  "<td>" + f.timeZoneOffset + "</td>" + "<td><input readonly='readonly' type='text' id='likes " + i + "' value=" + f.likes + " /><button onclick='incrementValue(" + i + ")'>+</button>" + " </td>" + "</tr>"
+                $(tblRow).appendTo("#userdata tbody");
+                TotalCount++;
+            });
+
+            document.getElementById('TotalCount').value = TotalCount;
+
+            //empty all textboxes.
+            document.getElementById('userText').value = '';
+            document.getElementById('valueText').value = '';
+            document.getElementById('idText').value = '';
+            document.getElementById('timestampText').value = '';
+            document.getElementById('timeZoneOffsetText').value = '';
+            document.getElementById('likesText').value = '';
+            document.getElementById('userText').focus();
+
+        }
+
+        //function to save data to json object and re-fill list.
+        function SaveData(e) {
+            //function for increment e.keycode == EnterKey press.
+            if (e.keyCode == 13) {
+                AddData();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+    </script>
+
+
+</head>
+
+<body style="background-color:pink">
+    Total feed Count: <input id="TotalCount" readonly="readonly"></input>
+    <div class="wrapper">
+        <div>
+            <table id="userdata" border="4">
+                <thead>
+                <th>user</th>
+                <th>value</th>
+                <th>id</th>
+                <th>timestamp</th>
+                <th>timeZoneOffset</th>
+                <th>likes</th>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <table border="3">
+                <tbody>
+                <td><input type="text" id="userText" onkeypress="return SaveData(event)" /></td>
+                <td><input type="text" id="valueText" onkeypress="return SaveData(event)" /></td>
+                <td><input type="text" id="idText" onkeypress="return SaveData(event)" /></td>
+                <td><input type="text" id="timestampText" onkeypress="return SaveData(event)" /></td>
+                <td><input type="text" id="timeZoneOffsetText" onkeypress="return SaveData(event)" /></td>
+                <td><input type="text" id="likesText" onkeypress="return SaveData(event)" /></td>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</body>
+</html>
+

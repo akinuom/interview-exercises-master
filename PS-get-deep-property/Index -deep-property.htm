@@ -1,0 +1,34 @@
+<html>
+<head>
+  
+
+    <script>
+        // given input from the instructions
+        var obj = { person: { name: { FirstName: 'Steve', middleInitial: 'G', lastName: 'Jones' } } }
+       
+        // funtion for getting value 
+
+        function deepValue(obj, path) {
+            var paths = path.split('.')
+              , current = obj
+              , i;
+
+               for (i = 0; i < paths.length; ++i) {
+                if (current[paths[i]] == undefined) {
+                    return undefined;
+                } else {
+                    current = current[paths[i]];
+                }
+            }
+            return current;
+        }
+        alert(deepValue(obj, 'person.name.lastName'));
+
+    </script>
+
+</head>
+
+<body>
+  
+</body>
+</html>
